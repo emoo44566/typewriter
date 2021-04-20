@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'views.dart';
 
 class MTypeWriter extends StatefulWidget {
-  final double width;
-
-  MTypeWriter({required this.width});
+  MTypeWriter();
 
   @override
   _MTypeWriterState createState() => _MTypeWriterState();
@@ -13,6 +11,8 @@ class MTypeWriter extends StatefulWidget {
 
 class _MTypeWriterState extends State<MTypeWriter> {
   String currentText = '';
+  Size deviceSize = Size(0, 0);
+  final TextEditingController _controller = TextEditingController();
 
   _onKeyPressed(String key) {
     //print(key);
@@ -24,11 +24,16 @@ class _MTypeWriterState extends State<MTypeWriter> {
         currentText += key;
       }
     });
+    _controller.text = currentText;
+
+    // this changes cursor position
+    _controller.selection = TextSelection.fromPosition(
+        TextPosition(offset: _controller.text.length));
   }
 
   @override
   Widget build(BuildContext context) {
-    final double itemWidth = (widget.width - 40) / 13;
+    deviceSize = MediaQuery.of(context).size;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -37,15 +42,20 @@ class _MTypeWriterState extends State<MTypeWriter> {
         Container(
           decoration: BoxDecoration(
             color: Color.fromRGBO(200, 200, 200, 1),
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(6), topRight: Radius.circular(6)),
+            // borderRadius: BorderRadius.only(
+            //     topLeft: Radius.circular(6), topRight: Radius.circular(6)),
           ),
           child: SizedBox(
-            height: 140,
-            child: Center(
-              child: Text(
-                currentText,
-                style: Theme.of(context).textTheme.headline4,
+            height: deviceSize.height * .34,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 30),
+              child: Center(
+                child: Text(
+                  currentText,
+                  style: Theme.of(context).textTheme.headline5?.copyWith(
+                        fontSize: deviceSize.height * .08,
+                      ),
+                ),
               ),
             ),
           ),
@@ -54,11 +64,13 @@ class _MTypeWriterState extends State<MTypeWriter> {
         //   height: 400,
         // child:
         MKeyboard(
-          width: widget.width,
+          width: deviceSize.width,
+          height: deviceSize.height * .66,
           onKeyPressed: _onKeyPressed,
         ),
         // ),
       ],
     );
   }
+
 }
