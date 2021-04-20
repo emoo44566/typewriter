@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'm_text.dart';
 import 'views.dart';
 
 class MTypeWriter extends StatefulWidget {
@@ -12,7 +13,6 @@ class MTypeWriter extends StatefulWidget {
 class _MTypeWriterState extends State<MTypeWriter> {
   String currentText = '';
   Size deviceSize = Size(0, 0);
-  final TextEditingController _controller = TextEditingController();
 
   _onKeyPressed(String key) {
     //print(key);
@@ -21,14 +21,9 @@ class _MTypeWriterState extends State<MTypeWriter> {
         if (currentText.length > 0)
           currentText = currentText.substring(0, currentText.length - 1);
       } else {
-        currentText += key;
+        if (currentText.length < 15) currentText += key;
       }
     });
-    _controller.text = currentText;
-
-    // this changes cursor position
-    _controller.selection = TextSelection.fromPosition(
-        TextPosition(offset: _controller.text.length));
   }
 
   @override
@@ -50,11 +45,10 @@ class _MTypeWriterState extends State<MTypeWriter> {
             child: Padding(
               padding: const EdgeInsets.only(top: 30),
               child: Center(
-                child: Text(
-                  currentText,
-                  style: Theme.of(context).textTheme.headline5?.copyWith(
-                        fontSize: deviceSize.height * .08,
-                      ),
+                child: MText(
+                  text: currentText,
+                  fontSize: deviceSize.height * .08,
+                  onKeyPressed: (String key) {},
                 ),
               ),
             ),
@@ -72,5 +66,4 @@ class _MTypeWriterState extends State<MTypeWriter> {
       ],
     );
   }
-
 }
