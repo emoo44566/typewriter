@@ -7,6 +7,7 @@ class MKey extends StatelessWidget {
   final OnKeyPressed onKeyPressed;
   final double width;
   final double height;
+  final double padding;
   final bool isUpperCase;
 
   const MKey(
@@ -15,13 +16,14 @@ class MKey extends StatelessWidget {
       required this.onKeyPressed,
       required this.width,
       required this.height,
+      required this.padding,
       required this.isUpperCase})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(2.0),
+      padding: EdgeInsets.all(padding),
       child: GestureDetector(
         onTap: () {
           onKeyPressed(isUpperCase ? label.toUpperCase() : label.toLowerCase());
@@ -39,10 +41,8 @@ class MKey extends StatelessWidget {
                 Center(
                   child: Text(
                     (isUpperCase) ? label.toUpperCase() : label.toLowerCase(),
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline6
-                        ?.copyWith(color: Colors.white70),
+                    style: Theme.of(context).textTheme.headline6?.copyWith(
+                        color: Colors.white70, fontSize: height * .36),
                   ),
                 ),
               ],

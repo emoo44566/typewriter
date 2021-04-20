@@ -12,10 +12,12 @@ class TypePage extends StatelessWidget {
           // Background(),
           SizedBox.expand(
             child: Container(
-                margin: EdgeInsets.only(left: 15.0, right: 15.0, top: 100.0),
-                child: MTypeWriter(width: 500)),
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                ),                
+                child: MTypeWriter()),
           ),
-          AppBarOnStack(title: "Type"),
+          // AppBarOnStack(title: "Type"),
         ],
       ),
     );

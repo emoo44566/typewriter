@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import 'm_key.dart';
@@ -5,9 +7,11 @@ import 'on_key_pressed.dart';
 
 class MKeyboard extends StatefulWidget {
   final double width;
+  final double height;
   final OnKeyPressed onKeyPressed;
 
-  MKeyboard({required this.width, required this.onKeyPressed});
+  MKeyboard(
+      {required this.width, required this.height, required this.onKeyPressed});
 
   @override
   _MKeyboardState createState() => _MKeyboardState();
@@ -15,6 +19,11 @@ class MKeyboard extends StatefulWidget {
 
 class _MKeyboardState extends State<MKeyboard> {
   bool isUpperCase = true;
+  double keyHeight = 10;
+  double keyPadding = 2;
+  var row1 = "QWERTYUIOP".split('');
+  var row2 = "ASDFGHJKL".split('');
+  var row3 = "ZXCVBNM".split('');
 
   _onKeyPressed(String key) {
     print(key);
@@ -27,31 +36,33 @@ class _MKeyboardState extends State<MKeyboard> {
     }
   }
 
-  _getKeyWidget(String label, double height, double widthFactor) {
+  _getKeyWidget(String label, double widthFactor) {
     return MKey(
       label: label,
       onKeyPressed: _onKeyPressed,
-      width: height * widthFactor,
-      height: height,
+      width: keyHeight * widthFactor,
+      height: keyHeight,
+      padding: keyPadding,
       isUpperCase: isUpperCase,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final double itemWidth = (widget.width - 40) / 13;
+    keyHeight = min(widget.height / 5, widget.width / 12);
+    var bigKeyWidthFactor = 1.5 + 1 * keyPadding / keyHeight;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
-          height: itemWidth * 6,
+          height: widget.height,
           decoration: BoxDecoration(
             color: Color.fromRGBO(220, 220, 220, 1),
-            borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(6),
-                bottomRight: Radius.circular(6)),
+            // borderRadius: BorderRadius.only(
+            //     bottomLeft: Radius.circular(6),
+            //     bottomRight: Radius.circular(6)),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -59,64 +70,30 @@ class _MKeyboardState extends State<MKeyboard> {
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  "Q",
-                  "W",
-                  "E",
-                  "R",
-                  "T",
-                  "Y",
-                  "U",
-                  "I",
-                  "O",
-                  "P",
-                ].map<Widget>((s) {
-                  return _getKeyWidget(s, itemWidth, 1);
+                children: row1.map<Widget>((s) {
+                  return _getKeyWidget(s, 1);
                 }).toList(),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  "A",
-                  "S",
-                  "D",
-                  "F",
-                  "G",
-                  "H",
-                  "J",
-                  "K",
-                  "L",
-                ].map<Widget>((s) {
-                  return _getKeyWidget(s, itemWidth, 1);
+                children: row2.map<Widget>((s) {
+                  return _getKeyWidget(s, 1);
                 }).toList(),
               ),
-              Padding(
-                padding: EdgeInsets.only(left: 0),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      "Z",
-                      "X",
-                      "C",
-                      "V",
-                      "B",
-                      "N",
-                      "M",
-                    ].map<Widget>((s) {
-                      return _getKeyWidget(s, itemWidth, 1);
-                    }).toList()
-                      ..add(_getKeyWidget("<-", itemWidth, 1.6))
-                      ..insert(0, _getKeyWidget("shift", itemWidth, 1.6))),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: itemWidth),
-                child: Row(
+              Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _getKeyWidget(" ", itemWidth, 5),
-                    _getKeyWidget(".", itemWidth, 1),
-                  ],
-                ),
+                  children: row3.map<Widget>((s) {
+                    return _getKeyWidget(s, 1);
+                  }).toList()
+                    ..insert(0, _getKeyWidget("shift", bigKeyWidthFactor))
+                    ..add(_getKeyWidget("<-", bigKeyWidthFactor))),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _getKeyWidget(",", 1),
+                  _getKeyWidget(" ", 5 + 8 * keyPadding / keyHeight),
+                  _getKeyWidget(".", 1),
+                ],
               ),
             ],
           ),

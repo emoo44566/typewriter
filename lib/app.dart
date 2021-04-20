@@ -1,12 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'main/main_screen.dart';
 
 class TypewriterApp extends StatelessWidget {
   @override
-    Widget build(BuildContext context) {    
+  Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+    ]);
     return MaterialApp(
       theme: ThemeData(
         // rgb(32,37,70) rgb(19,24,48)   rgb(227,58,84)  rgb(241,241,241)
