@@ -45,3 +45,16 @@ class WordlistStateTypewriter extends WordlistState {
   String toString() =>
       'WordlistStateTypewriter ($currentWord, $wordIndex, $wordCount)';
 }
+
+class WordlistStateFinish extends WordlistState {
+  WordlistStateFinish(
+      {required currentWord, required wordIndex, required wordCount})
+      : super(
+            currentWord: currentWord,
+            wordIndex: wordIndex,
+            wordCount: wordCount);
+
+  @override
+  String toString() =>
+      'WordlistStateFinish ($currentWord, $wordIndex, $wordCount)';
+}

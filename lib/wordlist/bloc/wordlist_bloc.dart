@@ -24,21 +24,34 @@ class WordlistBloc extends Bloc<WordlistEvent, WordlistState> {
     WordlistEvent event,
   ) async* {
     if (event is WordlistEventNextClicked) {
-      if (state is WordlistStateInitial) {
-        yield WordlistStateShow(
-            currentWord: await repository.getWord(0),
-            wordIndex: 0,
-            wordCount: state.wordCount);
-      } else if (state is WordlistStateShow) {
-        yield WordlistStateTypewriter(
-            currentWord: state.currentWord,
-            wordIndex: state.wordIndex,
-            wordCount: state.wordCount);
-      } else if (state is WordlistStateTypewriter) {
-        yield WordlistStateShow(
-            currentWord: await repository.getWord(state.wordIndex + 1),
-            wordIndex: state.wordIndex + 1,
-            wordCount: state.wordCount);
+      switch (state.runtimeType) {
+        case WordlistStateInitial:
+          yield WordlistStateShow(
+              currentWord: await repository.getWord(0),
+              wordIndex: 0,
+              wordCount: state.wordCount);
+          break;
+        case WordlistStateShow:
+          yield WordlistStateTypewriter(
+              currentWord: state.currentWord,
+              wordIndex: state.wordIndex,
+              wordCount: state.wordCount);
+          break;
+        case WordlistStateTypewriter:
+          if (state.wordIndex + 1 == state.wordCount)
+            yield WordlistStateFinish(
+                currentWord: '',
+                wordIndex: state.wordIndex,
+                wordCount: state.wordCount);
+          else
+            yield WordlistStateShow(
+                currentWord: await repository.getWord(state.wordIndex + 1),
+                wordIndex: state.wordIndex + 1,
+                wordCount: state.wordCount);
+          break;
+        case WordlistStateFinish:
+          yield WordlistStateInitial(wordCount: repository.getWordCount());
+          break;
       }
 
       // yield* _mapWordlistSelectTClickedsToState(event);
