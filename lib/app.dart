@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:typewriter/data/wordlist_repository.dart';
 import 'main/main_screen.dart';
+import 'wordlist/wordlist.dart';
 
 class TypewriterApp extends StatelessWidget {
   @override
@@ -53,9 +55,9 @@ class TypewriterApp extends StatelessWidget {
       title: 'Flutter Calendar',
       home: MultiBlocProvider(
         providers: [
-          // BlocProvider(
-          //   create: (_) => CalendarBloc(noteRepository),
-          // ),
+          BlocProvider(
+            create: (_) => WordlistBloc(repository: WordlistRepository()),
+          ),
           // BlocProvider(
           //   create: (_) => MainBloc(),
           // ),
