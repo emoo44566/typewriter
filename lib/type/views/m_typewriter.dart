@@ -3,7 +3,6 @@ import 'package:typewriter/type/key_labels.dart';
 import 'package:typewriter/wordlist/wordlist.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'm_text.dart';
 import 'views.dart';
 
 class MTypeWriter extends StatefulWidget {
@@ -84,8 +83,9 @@ class _MTypeWriterState extends State<MTypeWriter> {
                     flex: 1,
                     child: Align(
                       alignment: Alignment.centerLeft,
-                      child: MText(
+                      child: MHintText(
                         text: currentText,
+                        goalText: goalText,
                         fontSize: deviceSize.height * .08,
                         onKeyPressed: (String key) {},
                       ),

@@ -52,6 +52,7 @@ class _TypePageState extends State<TypePage> {
   }
 
   Widget _getW() {
+    print("_getW");
     return BlocBuilder<WordlistBloc, WordlistState>(builder: (context, state) {
       switch (state.runtimeType) {
         case WordlistStateInitial:
