@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:typewriter/type/key_labels.dart';
 
 import 'on_key_pressed.dart';
 
@@ -26,7 +28,12 @@ class MKey extends StatelessWidget {
       padding: EdgeInsets.all(padding),
       child: GestureDetector(
         onTap: () {
-          onKeyPressed(isUpperCase ? label.toUpperCase() : label.toLowerCase());
+          onKeyPressed(
+              (label == KeyLabels.BACKSPACE || label == KeyLabels.SHIFT)
+                  ? label
+                  : isUpperCase
+                      ? label.toUpperCase()
+                      : label.toLowerCase());
         },
         child: Container(
           decoration: BoxDecoration(
@@ -39,11 +46,31 @@ class MKey extends StatelessWidget {
             child: Stack(
               children: [
                 Center(
-                  child: Text(
-                    (isUpperCase) ? label.toUpperCase() : label.toLowerCase(),
-                    style: Theme.of(context).textTheme.headline6?.copyWith(
-                        color: Colors.white70, fontSize: height * .36),
-                  ),
+                  child: (label == KeyLabels.BACKSPACE)
+                      ? Icon(
+                          CupertinoIcons.delete_left_fill,
+                          size: height * .4,
+                          color: Colors.white.withAlpha(200),
+                        )
+                      : (label == KeyLabels.SHIFT)
+                          ? Icon(
+                              (isUpperCase)
+                                  ? CupertinoIcons.shift_fill
+                                  : CupertinoIcons.shift,
+                              size: height * .4,
+                              color: Colors.white.withAlpha(200),
+                            )
+                          : Text(
+                              (isUpperCase)
+                                  ? label.toUpperCase()
+                                  : label.toLowerCase(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline6
+                                  ?.copyWith(
+                                      color: Colors.white.withAlpha(200),
+                                      fontSize: height * .6),
+                            ),
                 ),
               ],
             ),

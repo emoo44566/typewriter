@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:typewriter/type/key_labels.dart';
 
 import 'm_key.dart';
 import 'on_key_pressed.dart';
@@ -27,7 +28,7 @@ class _MKeyboardState extends State<MKeyboard> {
 
   _onKeyPressed(String key) {
     print(key);
-    if (key.toLowerCase() == "shift") {
+    if (key == KeyLabels.SHIFT) {
       setState(() {
         isUpperCase = !isUpperCase;
       });
@@ -85,8 +86,10 @@ class _MKeyboardState extends State<MKeyboard> {
                   children: row3.map<Widget>((s) {
                     return _getKeyWidget(s, 1);
                   }).toList()
-                    ..insert(0, _getKeyWidget("shift", bigKeyWidthFactor))
-                    ..add(_getKeyWidget("<-", bigKeyWidthFactor))),
+                    ..insert(
+                        0, _getKeyWidget(KeyLabels.SHIFT, bigKeyWidthFactor))
+                    ..add(
+                        _getKeyWidget(KeyLabels.BACKSPACE, bigKeyWidthFactor))),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

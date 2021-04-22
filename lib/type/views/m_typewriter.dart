@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:typewriter/type/key_labels.dart';
 import 'package:typewriter/wordlist/wordlist.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,8 +20,9 @@ class _MTypeWriterState extends State<MTypeWriter> {
 
   _onKeyPressed(String key) {
     //print(key);
+
     setState(() {
-      if (key == "<-") {
+      if (key == KeyLabels.BACKSPACE) {
         if (currentText.length > 0)
           currentText = currentText.substring(0, currentText.length - 1);
       } else {

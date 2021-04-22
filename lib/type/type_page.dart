@@ -21,45 +21,19 @@ class TypePage extends StatelessWidget {
                 child: MTypeWriter()),
           ),
           // AppBarOnStack(title: "Type"),
-          //
-          //
-          //
+          
           SizedBox.expand(
-              child: (state is WordlistStateTypewriter)
-                  ? IgnorePointer(
-                      child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                          ),
-                          child: _getW()),
-                    )
-                  : Container(
-                      decoration: BoxDecoration(
-                        color: Color.fromRGBO(255, 250, 198, 1), //("#FFFDD0"),
-                      ),
-                      child: _getW())),
+              child: IgnorePointer(
+            ignoring: (state is WordlistStateTypewriter),
+            child: Container(
+                decoration: BoxDecoration(
+                  color: (state is WordlistStateTypewriter)
+                      ? Colors.transparent
+                      : Color.fromRGBO(255, 250, 222, 1),
+                ),
+                child: _getW()),
+          )),
 
-          //   Positioned(
-          //       top: 10,
-          //       left: 10,
-          //       right: 10,
-          //       bottom: 10,
-          //       child: Container(
-          //         decoration: BoxDecoration(color: Colors.red.withAlpha(50)),
-          //         child: Center(
-          //             child: (state is WordlistStateInitial)
-          //                 ? IconButton(
-          //                     iconSize: 60,
-          //                     icon: Icon(CupertinoIcons.play_fill),
-          //                     onPressed: () {
-          //                       context
-          //                           .read<WordlistBloc>()
-          //                           .add(WordlistEventNextClicked());
-          //                     })
-          //                 : (state is WordlistStateShow)
-          //                     ?
-          //                     :
-          //       )),
         ],
       ),
     );
