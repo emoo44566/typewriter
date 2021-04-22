@@ -35,7 +35,7 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.example.typewriter"
-        minSdkVersion 16
+        minSdkVersion 21   // change from 16 to 21 because of text to speech plugin flutter_tts
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

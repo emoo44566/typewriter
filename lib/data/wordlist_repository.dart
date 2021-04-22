@@ -1,5 +1,15 @@
 class WordlistRepository {
-  List<String> _wordList = ["book", "word", "door", "window", "water"];
+  List<String> _wordList = [
+    "book",
+    "word",
+    "door",
+    "window",
+    "water",
+    "bread",
+    "floor",
+    "carpet",
+    "speak"
+  ];
 
   Future<String> getWord(int index) async {
     // Read from DB or make network request etc...

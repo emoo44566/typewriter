@@ -2,10 +2,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:typewriter/wordlist/wordlist.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 import 'views/views.dart';
 
-class TypePage extends StatelessWidget {
+class TypePage extends StatefulWidget {
+  @override
+  _TypePageState createState() => _TypePageState();
+}
+
+class _TypePageState extends State<TypePage> {
+  FlutterTts flutterTts = FlutterTts();
+
+  Future _speak(String w) async {
+    var result = await flutterTts.speak(w);
+    // if (result == 1) setState(() => ttsState = TtsState.playing);
+  }
+
   @override
   Widget build(BuildContext context) {
     var state = context.watch<WordlistBloc>().state;
@@ -50,6 +63,7 @@ class TypePage extends StatelessWidget {
               });
 
         case WordlistStateShow:
+          _speak(state.currentWord);
           return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text(state.currentWord,
                 style: Theme.of(context).textTheme.headline4),
@@ -70,6 +84,7 @@ class TypePage extends StatelessWidget {
           ]);
 
         case WordlistStateTypewriter:
+          _speak(state.currentWord);
           return Padding(
             padding: const EdgeInsets.only(top: 30),
             child: Row(
