@@ -19,7 +19,7 @@ class MKeyboard extends StatefulWidget {
 }
 
 class _MKeyboardState extends State<MKeyboard> {
-  bool isUpperCase = true;
+  bool isUpperCase = false;
   double keyHeight = 10;
   double keyPadding = 2;
   var row1 = "QWERTYUIOP".split('');

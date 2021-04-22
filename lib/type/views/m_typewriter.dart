@@ -58,13 +58,40 @@ class _MTypeWriterState extends State<MTypeWriter> {
           child: SizedBox(
             height: deviceSize.height * .34,
             child: Padding(
-              padding: const EdgeInsets.only(top: 30),
-              child: Center(
-                child: MText(
-                  text: currentText,
-                  fontSize: deviceSize.height * .08,
-                  onKeyPressed: (String key) {},
-                ),
+              padding: EdgeInsets.only(
+                  top: 30,
+                  right: deviceSize.width * .3,
+                  left: deviceSize.width * .3),
+              child: Column(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: Text(
+                          goalText,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline6
+                              ?.copyWith(fontSize: deviceSize.height * .08),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: MText(
+                        text: currentText,
+                        fontSize: deviceSize.height * .08,
+                        onKeyPressed: (String key) {},
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

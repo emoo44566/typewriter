@@ -44,37 +44,32 @@ class _MTextState extends State<MText> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(20),
-      child: GestureDetector(
-        onTap: () {
-          widget.onKeyPressed("d");
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.red.withAlpha(30),
-            borderRadius: BorderRadius.circular(6),
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.red.withAlpha(20),
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+          Text(
+            widget.text,
+            style: Theme.of(context)
+                .textTheme
+                .headline6
+                ?.copyWith(fontSize: widget.fontSize),
           ),
-          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Text(
-              widget.text,
-              style: Theme.of(context)
-                  .textTheme
-                  .headline6
-                  ?.copyWith(fontSize: widget.fontSize),
-            ),
-            SizedBox(
-              width: 2,
-              height: widget.fontSize,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: showCurser ? Colors.red : Colors.transparent,
-                  borderRadius: BorderRadius.circular(6),
-                ),
+          SizedBox(
+            width: 2,
+            height: widget.fontSize,
+            child: Container(
+              decoration: BoxDecoration(
+                color: showCurser ? Colors.red : Colors.transparent,
+                borderRadius: BorderRadius.circular(6),
               ),
-            )
-          ]),
-        ),
+            ),
+          )
+        ]),
       ),
     );
   }

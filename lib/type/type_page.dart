@@ -21,7 +21,7 @@ class TypePage extends StatelessWidget {
                 child: MTypeWriter()),
           ),
           // AppBarOnStack(title: "Type"),
-          
+
           SizedBox.expand(
               child: IgnorePointer(
             ignoring: (state is WordlistStateTypewriter),
@@ -33,7 +33,6 @@ class TypePage extends StatelessWidget {
                 ),
                 child: _getW()),
           )),
-
         ],
       ),
     );
@@ -78,12 +77,7 @@ class TypePage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  width: 50,
-                ),
-                Text(state.currentWord,
-                    style: Theme.of(context).textTheme.headline3),
-                SizedBox(
-                  width: 30,
+                  width: 200,
                 ),
                 Text("${state.wordIndex + 1} of ${state.wordCount}",
                     style: Theme.of(context).textTheme.headline6)
