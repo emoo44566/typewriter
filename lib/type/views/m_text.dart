@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:typewriter/type/views/m_cursor.dart';
 
 import 'on_key_pressed.dart';
 
@@ -21,27 +22,6 @@ class MText extends StatefulWidget {
 }
 
 class _MTextState extends State<MText> {
-  late Timer timer;
-  bool showCurser = false;
-
-  @override
-  void initState() {
-    super.initState();
-    // _createMessage(context, "body");
-
-    timer = Timer.periodic(Duration(milliseconds: 600), (Timer t) {
-      setState(() {
-        showCurser = !showCurser;
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    timer.cancel();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -59,16 +39,7 @@ class _MTextState extends State<MText> {
                 .headline6
                 ?.copyWith(fontSize: widget.fontSize),
           ),
-          SizedBox(
-            width: 2,
-            height: widget.fontSize,
-            child: Container(
-              decoration: BoxDecoration(
-                color: showCurser ? Colors.red : Colors.transparent,
-                borderRadius: BorderRadius.circular(6),
-              ),
-            ),
-          )
+          MCursor(height: widget.fontSize)
         ]),
       ),
     );

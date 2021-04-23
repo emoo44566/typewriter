@@ -60,7 +60,7 @@ class _MKeyboardState extends State<MKeyboard> {
         Container(
           height: widget.height,
           decoration: BoxDecoration(
-            color: Color.fromRGBO(220, 220, 220, 1),
+            color: Color.fromRGBO(240, 228, 228, 1),
             // borderRadius: BorderRadius.only(
             //     bottomLeft: Radius.circular(6),
             //     bottomRight: Radius.circular(6)),
