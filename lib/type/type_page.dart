@@ -42,10 +42,12 @@ class _TypePageState extends State<TypePage> {
                 decoration: BoxDecoration(
                   color: (state is WordlistStateTypewriter)
                       ? Colors.transparent
-                      : Color.fromRGBO(255, 250, 222, 1),
+                      : Color.fromRGBO(222, 195, 195, 1),
                 ),
                 child: _getW()),
           )),
+
+          MWordShow(word: "word", onNextPressed: () {})
         ],
       ),
     );
@@ -56,12 +58,14 @@ class _TypePageState extends State<TypePage> {
     return BlocBuilder<WordlistBloc, WordlistState>(builder: (context, state) {
       switch (state.runtimeType) {
         case WordlistStateInitial:
-          return IconButton(
-              iconSize: 120,
-              icon: Icon(CupertinoIcons.play_fill),
-              onPressed: () {
-                context.read<WordlistBloc>().add(WordlistEventNextClicked());
-              });
+          return Center(
+            child: IconButton(
+                iconSize: 120,
+                icon: Icon(CupertinoIcons.play_fill),
+                onPressed: () {
+                  context.read<WordlistBloc>().add(WordlistEventNextClicked());
+                }),
+          );
 
         case WordlistStateShow:
           _speak(state.currentWord);
