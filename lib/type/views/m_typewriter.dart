@@ -6,7 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'views.dart';
 
 class MTypeWriter extends StatefulWidget {
-  MTypeWriter();
+  final String goalText;
+  MTypeWriter({required this.goalText});
 
   @override
   _MTypeWriterState createState() => _MTypeWriterState();
@@ -15,7 +16,7 @@ class MTypeWriter extends StatefulWidget {
 class _MTypeWriterState extends State<MTypeWriter> {
   String currentText = '';
   Size deviceSize = Size(0, 0);
-  String goalText = '';
+  // String goalText = '';
 
   _onKeyPressed(String key) {
     //print(key);
@@ -25,9 +26,9 @@ class _MTypeWriterState extends State<MTypeWriter> {
         if (currentText.length > 0)
           currentText = currentText.substring(0, currentText.length - 1);
       } else {
-        if (currentText.length < goalText.length) {
+        if (currentText.length < widget.goalText.length) {
           currentText += key;
-          if (currentText == goalText)
+          if (currentText == widget.goalText)
             context.read<WordlistBloc>().add(WordlistEventNextClicked());
         }
       }
@@ -38,7 +39,7 @@ class _MTypeWriterState extends State<MTypeWriter> {
   Widget build(BuildContext context) {
     deviceSize = MediaQuery.of(context).size;
     var state = context.watch<WordlistBloc>().state;
-    goalText = state.currentWord;
+    //goalText = state.currentWord;
     if (state is WordlistStateShow)
       setState(() {
         currentText = '';
@@ -64,7 +65,7 @@ class _MTypeWriterState extends State<MTypeWriter> {
               child: Center(
                 child: MHintText(
                   text: currentText,
-                  goalText: goalText,
+                  goalText: widget.goalText,
                   fontSize: deviceSize.height * .08,
                   onKeyPressed: (String key) {},
                 ),

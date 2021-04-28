@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:typewriter/wordlist/wordlist.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'dart:math' as math;
 
 class MWordShow extends StatefulWidget {
   final String word;
@@ -18,7 +19,6 @@ class _MWordShowState extends State<MWordShow>
     with SingleTickerProviderStateMixin {
   late Animation<double> animation;
   late AnimationController controller;
-
   @override
   void initState() {
     super.initState();
@@ -26,21 +26,17 @@ class _MWordShowState extends State<MWordShow>
     print("_MWordShowState init");
 
     controller =
-        AnimationController(duration: const Duration(seconds: 4), vsync: this);
-    // animation = Tween<double>(begin: 0, end: 100).animate(controller)
-    //   ..addStatusListener((state) => print('$state'));
-    animation = CurvedAnimation(parent: controller, curve: Curves.easeIn)
-      ..addStatusListener((status) {
-        print("status $status");
-        if (status == AnimationStatus.completed) {
-          //controller.reverse();
-        } else if (status == AnimationStatus.dismissed) {
-          //controller.forward();
-        }
-      });
-
-    // controller.forward();
-    //
+        AnimationController(duration: const Duration(seconds: 4), vsync: this)
+          ..addStatusListener((status) {
+            print("status in $status");
+          })
+          ..addListener(() {
+            // print(controller.value);
+            if ((.5 - controller.value < .03) && (controller.value < .5)) {
+              print("${controller.value} Stop");
+              controller.stop();
+            }
+          });
   }
 
   @override
@@ -52,38 +48,24 @@ class _MWordShowState extends State<MWordShow>
   @override
   Widget build(BuildContext context) {
     var state = context.watch<WordlistBloc>().state;
-    if (state is WordlistStateShow) controller.forward();
+    if (state is WordlistStateShow) {
+      print("WordlistStateShow");
+      controller.forward(from: 0);
+      print("WordlistStateShow");
+    }
 
     return Padding(
       padding: EdgeInsets.all(0),
       child: Container(
-        // decoration: BoxDecoration(
-        //   color: Colors.white,
-        //   borderRadius: BorderRadius.circular(6),
-        // ),
         child: StaggerAnimation(
             controller: controller,
             word: widget.word,
             onNextPressed: () {
-              controller.reverse();
+              // controller.reverse();
               widget.onNextPressed();
-              // Future.delayed(
-              //     Duration(seconds: 0, milliseconds: 500), () => widget.onNextPressed());
-              // widget.onNextPressed();
+              controller.forward(from: .51);
             },
             height: MediaQuery.of(context).size.height),
-
-        // AnimatedLogo(
-        //     animation: animation,
-        //     word: widget.word,
-        //     onNextPressed: () {
-        //       controller.reverse();
-        //       widget.onNextPressed();
-        //       // Future.delayed(
-        //       //     Duration(seconds: 0, milliseconds: 500), () => widget.onNextPressed());
-        //       // widget.onNextPressed();
-        //     },
-        //     height: MediaQuery.of(context).size.height),
       ),
     );
   }
@@ -96,96 +78,65 @@ class StaggerAnimation extends StatelessWidget {
       required this.word,
       required this.onNextPressed,
       required this.height})
-      : backgroundYPosition = Tween<double>(begin: -height, end: 0).animate(
-          CurvedAnimation(
-            parent: controller,
-            curve: Interval(
-              0.0,
-              0.300,
-              curve: Curves.easeInCubic,
-            ),
-          ),
+      : backgroundYPosition = _animate(controller, [
+          _getTween(-height, 0, 10),
+          _getConstantTween(0, 60),
+          _getTween(0, -height, 10),
+          _getConstantTween(-height, 20),
+        ]),
+        wordScaleTween = _animate(
+          controller,
+          [
+            _getConstantTween(0, 10),
+            _getTween(0, 1, 10),
+            _getConstantTween(1, 30),
+            _getTween(1, 0, 10),
+            _getConstantTween(0, 30),
+          ],
         ),
-        scale1Tween = Tween<double>(
-          begin: 0.0,
-          end: 1.0,
-        ).animate(
-          CurvedAnimation(
-            parent: controller,
-            curve: Interval(
-              0.200,
-              0.600,
-              curve: Curves.ease,
-            ),
-          ),
-        ),
-        buttonYPositionTween = Tween<double>(
-          begin: height,
-          end: 0,
-        ).animate(
-          CurvedAnimation(
-            parent: controller,
-            curve: Interval(
-              0.6,
-              1.0,
-              curve: Curves.ease,
-            ),
-          ),
-        ),
-        padding = EdgeInsetsTween(
-          begin: const EdgeInsets.only(bottom: 16.0),
-          end: const EdgeInsets.only(bottom: 75.0),
-        ).animate(
-          CurvedAnimation(
-            parent: controller,
-            curve: Interval(
-              0.250,
-              0.375,
-              curve: Curves.ease,
-            ),
-          ),
-        ),
-        borderRadius = BorderRadiusTween(
-          begin: BorderRadius.circular(4.0),
-          end: BorderRadius.circular(75.0),
-        ).animate(
-          CurvedAnimation(
-            parent: controller,
-            curve: Interval(
-              0.375,
-              0.500,
-              curve: Curves.ease,
-            ),
-          ),
-        ),
-        color = ColorTween(
-          begin: Colors.red,
-          end: Colors.blue,
-        ).animate(
-          CurvedAnimation(
-            parent: controller,
-            curve: Interval(
-              0.500,
-              0.750,
-              curve: Curves.ease,
-            ),
-          ),
-        ),
-
-        // ... Other tween definitions ...
-
+        buttonYPositionTween = _animate(
+          controller,
+          [
+            _getConstantTween(height, 30),
+            _getTween(height, 0, 9),
+            _getConstantTween(0, 13),
+            _getTween(0, height, 8),
+            _getConstantTween(height, 40),
+          ],
+        ),     
         super(key: key);
 
   final AnimationController controller;
   final String word;
   final VoidCallback onNextPressed;
   final double height;
-  final Animation<double> scale1Tween;
-  final Animation<double> buttonYPositionTween;
+
   final Animation<double> backgroundYPosition;
-  final Animation<EdgeInsets> padding;
-  final Animation<BorderRadius> borderRadius;
-  final Animation<Color?> color;
+  final Animation<double> wordScaleTween;
+  final Animation<double> buttonYPositionTween;
+
+  static _getTween(double b, double e, double w) => TweenSequenceItem<double>(
+        tween: Tween<double>(begin: b, end: e)
+            .chain(CurveTween(curve: Curves.ease)),
+        weight: w,
+      );
+
+  static _getConstantTween(double v, double w) => TweenSequenceItem<double>(
+        tween: ConstantTween<double>(v).chain(CurveTween(curve: Curves.ease)),
+        weight: w,
+      );
+
+  static _animate(AnimationController c, List<TweenSequenceItem<double>> l) =>
+      TweenSequence<double>(l).animate(
+        CurvedAnimation(
+          parent: c,
+          curve: Interval(
+            0,
+            1,
+            curve: Curves.linear,
+          ),
+        ),
+      );
 
   // This function is called each time the controller "ticks" a new frame.
   // When it runs, all of the animation's values will have been
@@ -195,6 +146,9 @@ class StaggerAnimation extends StatelessWidget {
       SizedBox.expand(
         child: Transform.translate(
           offset: Offset(0, backgroundYPosition.value),
+          // isEnter
+          //     ? backgroundYPosition.value
+          //     : backgroundYPositionOut.value),
           child: Container(
             decoration: BoxDecoration(
               color: Color.fromRGBO(222, 80, 195, 1),
@@ -205,7 +159,7 @@ class StaggerAnimation extends StatelessWidget {
       SizedBox.expand(
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         Transform.scale(
-          scale: scale1Tween.value,
+          scale: wordScaleTween.value, //   < .3 ? .5 : 1,
           child: Text(word, style: Theme.of(context).textTheme.headline4),
         ),
         SizedBox(
@@ -228,9 +182,11 @@ class StaggerAnimation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    wordScaleTween.addListener(() {
+      print(
+          "value scale: ${controller.value.toStringAsFixed(2)} ${wordScaleTween.value.toStringAsFixed(2)}");
+    });
     return AnimatedBuilder(
-      builder: _buildAnimation,
-      animation: controller,
-    );
+        builder: _buildAnimation, animation: controller.view);
   }
 }
