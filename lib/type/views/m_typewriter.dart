@@ -7,7 +7,8 @@ import 'views.dart';
 
 class MTypeWriter extends StatefulWidget {
   final String goalText;
-  MTypeWriter({required this.goalText});
+  final Color backgroundColor;
+  MTypeWriter({required this.goalText, required this.backgroundColor});
 
   @override
   _MTypeWriterState createState() => _MTypeWriterState();
@@ -16,7 +17,14 @@ class MTypeWriter extends StatefulWidget {
 class _MTypeWriterState extends State<MTypeWriter> {
   String currentText = '';
   Size deviceSize = Size(0, 0);
-  // String goalText = '';
+  String goalText = '';
+  Color backgroundColor = Colors.blue;
+
+  @override
+  void initState() {
+    super.initState();
+    print("initState --");
+  }
 
   _onKeyPressed(String key) {
     //print(key);
@@ -26,9 +34,9 @@ class _MTypeWriterState extends State<MTypeWriter> {
         if (currentText.length > 0)
           currentText = currentText.substring(0, currentText.length - 1);
       } else {
-        if (currentText.length < widget.goalText.length) {
+        if (currentText.length < goalText.length) {
           currentText += key;
-          if (currentText == widget.goalText)
+          if (currentText == goalText)
             context.read<WordlistBloc>().add(WordlistEventNextClicked());
         }
       }
@@ -38,12 +46,19 @@ class _MTypeWriterState extends State<MTypeWriter> {
   @override
   Widget build(BuildContext context) {
     deviceSize = MediaQuery.of(context).size;
+    print("build ...");
+
     var state = context.watch<WordlistBloc>().state;
-    //goalText = state.currentWord;
-    if (state is WordlistStateShow)
-      setState(() {
-        currentText = '';
-      });
+
+    Future.delayed(Duration(milliseconds: 1800), () {
+      print("build ... //");
+      goalText = state.currentWord;
+      if ((state is WordlistStateShow) && (currentText != ''))
+        setState(() {
+          currentText = '';
+          backgroundColor = widget.backgroundColor;
+        });
+    });
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -51,9 +66,7 @@ class _MTypeWriterState extends State<MTypeWriter> {
       children: <Widget>[
         Container(
           decoration: BoxDecoration(
-            color: Color.fromRGBO(222, 195, 195, 1), //(200, 200, 200, 1),
-            // borderRadius: BorderRadius.only(
-            //     topLeft: Radius.circular(6), topRight: Radius.circular(6)),
+            color: widget.backgroundColor,
           ),
           child: SizedBox(
             height: deviceSize.height * .34,
@@ -65,7 +78,7 @@ class _MTypeWriterState extends State<MTypeWriter> {
               child: Center(
                 child: MHintText(
                   text: currentText,
-                  goalText: widget.goalText,
+                  goalText: goalText,
                   fontSize: deviceSize.height * .08,
                   onKeyPressed: (String key) {},
                 ),
@@ -73,15 +86,12 @@ class _MTypeWriterState extends State<MTypeWriter> {
             ),
           ),
         ),
-        // SizedBox(
-        //   height: 400,
-        // child:
         MKeyboard(
           width: deviceSize.width,
           height: deviceSize.height * .66,
+          backgroundColor: widget.backgroundColor.withOpacity(.6),
           onKeyPressed: _onKeyPressed,
         ),
-        // ),
       ],
     );
   }

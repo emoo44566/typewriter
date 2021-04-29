@@ -13,7 +13,6 @@ class TypePage extends StatefulWidget {
 
 class _TypePageState extends State<TypePage> {
   FlutterTts flutterTts = FlutterTts();
-  late WordlistState state;
 
   Future _speak(String w) async {
     var result = await flutterTts.speak(w);
@@ -22,29 +21,35 @@ class _TypePageState extends State<TypePage> {
 
   @override
   Widget build(BuildContext context) {
-    state = context.watch<WordlistBloc>().state;
-    return SizedBox.expand(
-      child: Stack(children: _getStackChildren()),
-    );
+    return BlocBuilder<WordlistBloc, WordlistState>(builder: (context, state) {
+      print("blocbuilder /...");
+      return SizedBox.expand(
+        child: Stack(children: _getStackChildren(state)),
+      );
+    });
   }
 
-  List<Widget> _getStackChildren() {
+  List<Widget> _getStackChildren(WordlistState state) {
     switch (state.runtimeType) {
       case WordlistStateInitial:
-        return <Widget>[childInitial()];
+        return <Widget>[_childInitial()];
       case WordlistStateShow:
         _speak(state.currentWord);
         if (state.wordIndex == 0)
-          return <Widget>[childInitial(), childWordShow()];
+          return <Widget>[
+            _childTypeWriter(state),
+            _childInitial(),
+            _childWordShow(state)
+          ];
         else
-          return <Widget>[childTypeWriter(), childWordShow()];
+          return <Widget>[_childTypeWriter(state), _childWordShow(state)];
       case WordlistStateTypewriter:
-        return <Widget>[childTypeWriter(), childWordShow()];
+        return <Widget>[_childTypeWriter(state), _childWordShow(state)];
     }
-    return <Widget>[childInitial()];
+    return <Widget>[_childInitial()];
   }
 
-  Widget childInitial() {
+  Widget _childInitial() {
     return SizedBox.expand(
         child: Container(
             decoration: BoxDecoration(
@@ -65,27 +70,38 @@ class _TypePageState extends State<TypePage> {
             )));
   }
 
-  Widget childWordShow() {
+  Widget _childWordShow(WordlistState state) {
     return SizedBox.expand(
         child: MWordShow(
       key: Key("lsdkfjlsdfsl"),
       word: state.currentWord,
+      backgroundColor: _getStateColor(state),
       onNextPressed: () =>
           context.read<WordlistBloc>().add(WordlistEventNextClicked()),
     ));
   }
 
-  Widget childTypeWriter() {
+  Widget _childTypeWriter(WordlistState state) {
     return SizedBox.expand(
       child: Container(
           decoration: BoxDecoration(
-            color: Colors.black,
+            color: Colors.white,
           ),
-          child: MTypeWriter(goalText: state.currentWord,)),
+          child: MTypeWriter(
+            goalText: state.currentWord,
+            backgroundColor: _getStateColor(state),
+          )),
     );
   }
 
-  Widget childFinish() {
+  Color _getStateColor(WordlistState state) {
+    if (state.wordIndex % 2 == 0)
+      return Color.fromRGBO(222, 195, 195, 1);
+    else
+      return Color.fromRGBO(216, 226, 220, 1); //(199, 240, 225, 1);
+  }
+
+  Widget _childFinish() {
     return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
       Text("Finish", style: Theme.of(context).textTheme.headline4),
       SizedBox(

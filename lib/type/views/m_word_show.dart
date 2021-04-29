@@ -6,9 +6,14 @@ import 'dart:math' as math;
 
 class MWordShow extends StatefulWidget {
   final String word;
+  final Color backgroundColor;
   final VoidCallback onNextPressed;
 
-  const MWordShow({Key? key, required this.word, required this.onNextPressed})
+  const MWordShow(
+      {Key? key,
+      required this.word,
+      required this.backgroundColor,
+      required this.onNextPressed})
       : super(key: key);
 
   @override
@@ -50,6 +55,7 @@ class _MWordShowState extends State<MWordShow>
     var state = context.watch<WordlistBloc>().state;
     if (state is WordlistStateShow) {
       print("WordlistStateShow");
+
       controller.forward(from: 0);
       print("WordlistStateShow");
     }
@@ -57,16 +63,17 @@ class _MWordShowState extends State<MWordShow>
     return Padding(
       padding: EdgeInsets.all(0),
       child: Container(
-        child: StaggerAnimation(
-            controller: controller,
-            word: widget.word,
-            onNextPressed: () {
-              // controller.reverse();
-              widget.onNextPressed();
-              controller.forward(from: .51);
-            },
-            height: MediaQuery.of(context).size.height),
-      ),
+          child: StaggerAnimation(
+        controller: controller,
+        word: widget.word,
+        onNextPressed: () {
+          // controller.reverse();
+          widget.onNextPressed();
+          controller.forward(from: .51);
+        },
+        height: MediaQuery.of(context).size.height,
+        backgroundColor: widget.backgroundColor,
+      )),
     );
   }
 }
@@ -77,7 +84,8 @@ class StaggerAnimation extends StatelessWidget {
       required this.controller,
       required this.word,
       required this.onNextPressed,
-      required this.height})
+      required this.height,
+      required this.backgroundColor})
       : backgroundYPosition = _animate(controller, [
           _getTween(-height, 0, 10),
           _getConstantTween(0, 60),
@@ -103,13 +111,14 @@ class StaggerAnimation extends StatelessWidget {
             _getTween(0, height, 8),
             _getConstantTween(height, 40),
           ],
-        ),     
+        ),
         super(key: key);
 
   final AnimationController controller;
   final String word;
   final VoidCallback onNextPressed;
   final double height;
+  final Color backgroundColor;
 
   final Animation<double> backgroundYPosition;
   final Animation<double> wordScaleTween;
@@ -151,7 +160,7 @@ class StaggerAnimation extends StatelessWidget {
           //     : backgroundYPositionOut.value),
           child: Container(
             decoration: BoxDecoration(
-              color: Color.fromRGBO(222, 80, 195, 1),
+              color: backgroundColor, //Color.fromRGBO(222, 80, 195, 1),
             ),
           ),
         ),
@@ -182,10 +191,10 @@ class StaggerAnimation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    wordScaleTween.addListener(() {
-      print(
-          "value scale: ${controller.value.toStringAsFixed(2)} ${wordScaleTween.value.toStringAsFixed(2)}");
-    });
+    // wordScaleTween.addListener(() {
+    //   print(
+    //       "value scale: ${controller.value.toStringAsFixed(2)} ${wordScaleTween.value.toStringAsFixed(2)}");
+    // });
     return AnimatedBuilder(
         builder: _buildAnimation, animation: controller.view);
   }

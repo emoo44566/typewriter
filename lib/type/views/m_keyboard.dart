@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:typewriter/main/main.dart';
 import 'package:typewriter/type/key_labels.dart';
 
 import 'm_key.dart';
@@ -9,10 +10,14 @@ import 'on_key_pressed.dart';
 class MKeyboard extends StatefulWidget {
   final double width;
   final double height;
+  final Color backgroundColor;
   final OnKeyPressed onKeyPressed;
 
   MKeyboard(
-      {required this.width, required this.height, required this.onKeyPressed});
+      {required this.width,
+      required this.height,
+      required this.backgroundColor,
+      required this.onKeyPressed});
 
   @override
   _MKeyboardState createState() => _MKeyboardState();
@@ -60,7 +65,7 @@ class _MKeyboardState extends State<MKeyboard> {
         Container(
           height: widget.height,
           decoration: BoxDecoration(
-            color: Color.fromRGBO(240, 228, 228, 1),
+            color: widget.backgroundColor,  //Color.fromRGBO(240, 228, 228, 1),
             // borderRadius: BorderRadius.only(
             //     bottomLeft: Radius.circular(6),
             //     bottomRight: Radius.circular(6)),
