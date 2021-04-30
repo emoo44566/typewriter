@@ -5,11 +5,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:typewriter/data/wordlist_repository.dart';
 import 'main/main_screen.dart';
+import 'package/package.dart';
 import 'wordlist/wordlist.dart';
 
 class TypewriterApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var repository = WordlistRepository();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeLeft,
     ]);
@@ -56,11 +58,11 @@ class TypewriterApp extends StatelessWidget {
       home: MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (_) => WordlistBloc(repository: WordlistRepository()),
+            create: (_) => WordlistBloc(repository: repository),
           ),
-          // BlocProvider(
-          //   create: (_) => MainBloc(),
-          // ),
+          BlocProvider(
+            create: (_) => PackageBloc(repository: repository),
+          ),
           // BlocProvider(
           //   create: (_) => NoteBloc(noteRepository),
           // ),

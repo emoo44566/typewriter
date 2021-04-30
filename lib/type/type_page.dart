@@ -5,6 +5,7 @@ import 'package:typewriter/wordlist/wordlist.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
 import 'views/views.dart';
+import '../package/package.dart';
 
 class TypePage extends StatefulWidget {
   @override
@@ -45,6 +46,8 @@ class _TypePageState extends State<TypePage> {
           return <Widget>[_childTypeWriter(state), _childWordShow(state)];
       case WordlistStateTypewriter:
         return <Widget>[_childTypeWriter(state), _childWordShow(state)];
+      case WordlistStateFinish:
+        return [_childFinish()];
     }
     return <Widget>[_childInitial()];
   }
@@ -55,18 +58,30 @@ class _TypePageState extends State<TypePage> {
             decoration: BoxDecoration(
               color: Color.fromRGBO(222, 195, 195, 1),
             ),
-            child: Center(
-              child: IconButton(
-                  iconSize: 120,
-                  icon: Icon(CupertinoIcons.play_fill),
-                  onPressed: () {
-                    Future.delayed(
-                        Duration(seconds: 0),
-                        () => context
-                            .read<WordlistBloc>()
-                            .add(WordlistEventNextClicked()));
-                    // context.read<WordlistBloc>().add(WordlistEventNextClicked());
-                  }),
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Center(
+                    child: IconButton(
+                        iconSize: 120,
+                        icon: Icon(CupertinoIcons.play_fill),
+                        onPressed: () {
+                          Future.delayed(
+                              Duration(seconds: 0),
+                              () => {});
+                          // context.read<WordlistBloc>().add(WordlistEventNextClicked());
+                        }),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: PackagePage(
+                      onPackageTap: (model) => context
+                          .read<WordlistBloc>()
+                          .add(WordlistEventStartClicked(packageModel: model))),
+                ),
+              ],
             )));
   }
 
@@ -102,17 +117,27 @@ class _TypePageState extends State<TypePage> {
   }
 
   Widget _childFinish() {
-    return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-      Text("Finish", style: Theme.of(context).textTheme.headline4),
-      SizedBox(
-        height: 60,
-      ),
-      IconButton(
-          iconSize: 120,
-          icon: Icon(CupertinoIcons.refresh_thick),
-          onPressed: () {
-            context.read<WordlistBloc>().add(WordlistEventNextClicked());
-          }),
-    ]);
+    return SizedBox.expand(
+        child: Container(
+            decoration: BoxDecoration(
+              color: Color.fromRGBO(222, 195, 195, 1),
+            ),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text("Finish", style: Theme.of(context).textTheme.headline4),
+                  SizedBox(
+                    height: 60,
+                  ),
+                  IconButton(
+                      iconSize: 120,
+                      icon: Icon(CupertinoIcons.refresh_thick),
+                      onPressed: () {
+                        context
+                            .read<WordlistBloc>()
+                            .add(WordlistEventNextClicked());
+                      }),
+                ])));
   }
 }

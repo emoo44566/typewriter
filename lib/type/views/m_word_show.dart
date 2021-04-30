@@ -169,7 +169,11 @@ class StaggerAnimation extends StatelessWidget {
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         Transform.scale(
           scale: wordScaleTween.value, //   < .3 ? .5 : 1,
-          child: Text(word, style: Theme.of(context).textTheme.headline4),
+          child: Text(word,
+              style: Theme.of(context)
+                  .textTheme
+                  .headline4
+                  ?.copyWith(fontSize: height * .08)),
         ),
         SizedBox(
           height: 100, // _sizeTween.evaluate(animation),

@@ -1,60 +1,66 @@
 part of "wordlist_bloc.dart";
 
 abstract class WordlistState extends Equatable {
+  final PackageModel packageModel;
   final String currentWord;
   final int wordIndex;
-  final int wordCount;
 
   const WordlistState(
-      {this.currentWord = "", this.wordIndex = -1, required this.wordCount});
+      {required this.packageModel, this.currentWord = "", this.wordIndex = -1});
 
   @override
-  List<Object> get props => [currentWord, wordIndex, wordCount];
+  List<Object> get props => [packageModel, currentWord];
 }
 
 class WordlistStateInitial extends WordlistState {
-  WordlistStateInitial({required wordCount}) : super(wordCount: wordCount);
+  WordlistStateInitial({required packageModel})
+      : super(packageModel: packageModel);
 
   @override
-  String toString() =>
-      'WordlistStateInitial ($currentWord, $wordIndex, $wordCount)';
+  String toString() => 'WordlistStateInitial ($packageModel, $currentWord)';
 }
 
 class WordlistStateShow extends WordlistState {
   WordlistStateShow(
-      {required currentWord, required wordIndex, required wordCount})
+      {required packageModel,
+      required currentWord,
+      required wordIndex})
       : super(
+            packageModel: packageModel,
             currentWord: currentWord,
-            wordIndex: wordIndex,
-            wordCount: wordCount);
+            wordIndex: wordIndex);
 
   @override
   String toString() =>
-      'WordlistStateShow ($currentWord, $wordIndex, $wordCount)';
+      'WordlistStateShow ($packageModel, $currentWord, $wordIndex)';
 }
 
 class WordlistStateTypewriter extends WordlistState {
   WordlistStateTypewriter(
-      {required currentWord, required wordIndex, required wordCount})
+      {required packageModel,
+      required currentWord,
+      required wordIndex})
       : super(
+            packageModel: packageModel,
             currentWord: currentWord,
-            wordIndex: wordIndex,
-            wordCount: wordCount);
+            wordIndex: wordIndex);
 
   @override
   String toString() =>
-      'WordlistStateTypewriter ($currentWord, $wordIndex, $wordCount)';
+      'WordlistStateTypewriter ($packageModel, $currentWord, $wordIndex)';
 }
 
 class WordlistStateFinish extends WordlistState {
   WordlistStateFinish(
-      {required currentWord, required wordIndex, required wordCount})
+      {required packageModel,
+      required currentWord,
+      required wordIndex})
       : super(
+            packageModel: packageModel,
             currentWord: currentWord,
-            wordIndex: wordIndex,
-            wordCount: wordCount);
+            wordIndex: wordIndex);
 
   @override
   String toString() =>
-      'WordlistStateFinish ($currentWord, $wordIndex, $wordCount)';
+      'WordlistStateFinish ($packageModel, $currentWord, $wordIndex)';
 }
