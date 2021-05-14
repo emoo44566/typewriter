@@ -23,7 +23,7 @@ class _TypePageState extends State<TypePage> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<WordlistBloc, WordlistState>(builder: (context, state) {
-      print("blocbuilder /...");
+      print("blocbuilder ... TypePage");
       return SizedBox.expand(
         child: Stack(children: _getStackChildren(state)),
       );
@@ -33,18 +33,21 @@ class _TypePageState extends State<TypePage> {
   List<Widget> _getStackChildren(WordlistState state) {
     switch (state.runtimeType) {
       case WordlistStateInitial:
-        return <Widget>[_childInitial()];
+        print("TypePage: WordlistStateInitial");
+        return <Widget>[_childTypeWriter(state), _childInitial()];
       case WordlistStateShow:
-        _speak(state.currentWord);
+        print("TypePage: WordlistStateShow");
+        _speak(state.currentWord.key);
         if (state.wordIndex == 0)
           return <Widget>[
-            _childTypeWriter(state),
+            // _childTypeWriter(state),
             _childInitial(),
             _childWordShow(state)
           ];
         else
           return <Widget>[_childTypeWriter(state), _childWordShow(state)];
       case WordlistStateTypewriter:
+        print("TypePage: WordlistStateTypewriter");
         return <Widget>[_childTypeWriter(state), _childWordShow(state)];
       case WordlistStateFinish:
         return [_childFinish()];
@@ -67,9 +70,7 @@ class _TypePageState extends State<TypePage> {
                         iconSize: 120,
                         icon: Icon(CupertinoIcons.play_fill),
                         onPressed: () {
-                          Future.delayed(
-                              Duration(seconds: 0),
-                              () => {});
+                          Future.delayed(Duration(seconds: 0), () => {});
                           // context.read<WordlistBloc>().add(WordlistEventNextClicked());
                         }),
                   ),
@@ -86,10 +87,11 @@ class _TypePageState extends State<TypePage> {
   }
 
   Widget _childWordShow(WordlistState state) {
+    print("_childWordShow ${state.currentWord}");
     return SizedBox.expand(
         child: MWordShow(
       key: Key("lsdkfjlsdfsl"),
-      word: state.currentWord,
+      word: state.currentWord.key,
       backgroundColor: _getStateColor(state),
       onNextPressed: () =>
           context.read<WordlistBloc>().add(WordlistEventNextClicked()),
@@ -103,7 +105,7 @@ class _TypePageState extends State<TypePage> {
             color: Colors.white,
           ),
           child: MTypeWriter(
-            goalText: state.currentWord,
+            goalText: state.currentWord.key,
             backgroundColor: _getStateColor(state),
           )),
     );

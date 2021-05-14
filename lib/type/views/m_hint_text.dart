@@ -67,10 +67,11 @@ class _MTextState extends State<MHintText> {
         // ),
         Text(char, style: style),
         Transform.translate(
-          offset: Offset(0, widget.fontSize * -.2),
+          offset: Offset(0, widget.fontSize * .1),
           child: Transform.scale(
-              scale: 1.6,
-              child: Icon(CupertinoIcons.chevron_up, 
+              scale: 5,
+              child: Icon(CupertinoIcons.chevron_up,
+                  size: 8,
                   color: (isCurrent) ? Colors.black : Colors.transparent)),
         ),
         // Transform.translate(
@@ -86,6 +87,7 @@ class _MTextState extends State<MHintText> {
 
   @override
   Widget build(BuildContext context) {
+    print("MHintText -${widget.text}-${widget.goalText}-");
     return Container(
       decoration: BoxDecoration(
         color: Colors.red.withAlpha(0),

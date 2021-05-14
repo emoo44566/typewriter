@@ -51,7 +51,7 @@ class WordlistBloc extends Bloc<WordlistEvent, WordlistState> {
           if (state.wordIndex + 1 == state.packageModel.wordCount)
             yield WordlistStateFinish(
                 packageModel: state.packageModel,
-                currentWord: '',
+                currentWord: const MapEntry<String, String>('', ''),
                 wordIndex: state.wordIndex);
           else
             yield WordlistStateShow(

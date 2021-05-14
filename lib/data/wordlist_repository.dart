@@ -13,20 +13,41 @@ class WordlistRepository {
     "speak"
   ];
 
-  List<List<String>> _packageWordList = [
-    "ABCDEF".split(''),
-    "GHIJKL".split(''),
-    "MNOPQRS".split(''),
-    "TUVWXYZ".split(''),
-    ["food", "bread", "water", "drink"],
-    ["white", "blue", "red", "green", "yellow"],
+  static var alphabetName =
+      "اِی بی سی دی ای اِف جی اِچ آی جِی کِی اِل اِم اِن اُ پی کیو آر اِس تی یو وی دَبِلیو ایکس وای زِد"
+          .split(' ');
+  static var alphabetStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
+  static var list = new List<int>.generate(26, (i) => i);
+  static Map<String, String> alphabetUC = {
+    // for (var item in alphabetStr.split('')) '$item': 'حرف 10 الفبا شکل بزرگ '
+    for (var i in list) '${alphabetStr[i]}': '${alphabetName[i]}'
+  };
+
+  static Map<String, String> alphabetLC = {
+    for (var i in list) '${alphabetStr[i].toLowerCase()}': '${alphabetName[i]}'
+  };
+
+  static Map<String, String> food1 = {
+    'food': 'غذا',
+    'bread': 'نان',
+    'butter': 'کره',
+    'cheese': 'پنیر',
+    'knife': 'چاقو',
+    'spoon': 'قاشق',
+  };
+
+  List<Map<String, String>> _packageWordList = [
+    alphabetUC,
+    alphabetLC,
+    food1,
+    // ["white", "blue", "red", "green", "yellow"],
   ];
 
-  Future<String> getWord(int packageId, int index) async {
+  Future<MapEntry<String, String>> getWord(int packageId, int index) async {
     // Read from DB or make network request etc...
     return Future.delayed(
       Duration(milliseconds: 2),
-      () => _packageWordList[packageId][index],
+      () => _packageWordList[packageId].entries.elementAt(index),
     );
   }
 
@@ -36,12 +57,12 @@ class WordlistRepository {
 
   List<PackageModel> getPackageModelList() {
     return [
-      PackageModel(0, "Alphabet1", "from A to F", _packageWordList[0].length),
-      PackageModel(1, "Alphabet2", "from G to L", _packageWordList[1].length),
-      PackageModel(2, "Alphabet3", "from M to S", _packageWordList[2].length),
-      PackageModel(3, "Alphabet4", "from T to Z", _packageWordList[3].length),
-      PackageModel(4, "Food", "food and drink", _packageWordList[4].length),
-      PackageModel(5, "Color", "different colors", _packageWordList[5].length),
+      PackageModel(0, "Alphabet UpperCase", "حروف الفبا شکل بزرگ",
+          _packageWordList[0].length),
+      PackageModel(1, "Alphabet LowerCase", "حروف الفبا شکل کوچک",
+          _packageWordList[1].length),
+      PackageModel(2, "Food", "غذا", _packageWordList[2].length),
+      // PackageModel(3, "Color", "different colors", _packageWordList[3].length),
     ];
   }
 

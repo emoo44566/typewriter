@@ -2,11 +2,13 @@ part of "wordlist_bloc.dart";
 
 abstract class WordlistState extends Equatable {
   final PackageModel packageModel;
-  final String currentWord;
+  final MapEntry<String, String> currentWord;
   final int wordIndex;
 
   const WordlistState(
-      {required this.packageModel, this.currentWord = "", this.wordIndex = -1});
+      {required this.packageModel,
+      this.currentWord = const MapEntry<String, String>('', ''),
+      this.wordIndex = -1});
 
   @override
   List<Object> get props => [packageModel, currentWord];
@@ -22,9 +24,7 @@ class WordlistStateInitial extends WordlistState {
 
 class WordlistStateShow extends WordlistState {
   WordlistStateShow(
-      {required packageModel,
-      required currentWord,
-      required wordIndex})
+      {required packageModel, required currentWord, required wordIndex})
       : super(
             packageModel: packageModel,
             currentWord: currentWord,
@@ -37,9 +37,7 @@ class WordlistStateShow extends WordlistState {
 
 class WordlistStateTypewriter extends WordlistState {
   WordlistStateTypewriter(
-      {required packageModel,
-      required currentWord,
-      required wordIndex})
+      {required packageModel, required currentWord, required wordIndex})
       : super(
             packageModel: packageModel,
             currentWord: currentWord,
@@ -52,9 +50,7 @@ class WordlistStateTypewriter extends WordlistState {
 
 class WordlistStateFinish extends WordlistState {
   WordlistStateFinish(
-      {required packageModel,
-      required currentWord,
-      required wordIndex})
+      {required packageModel, required currentWord, required wordIndex})
       : super(
             packageModel: packageModel,
             currentWord: currentWord,

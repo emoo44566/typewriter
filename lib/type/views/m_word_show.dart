@@ -33,12 +33,12 @@ class _MWordShowState extends State<MWordShow>
     controller =
         AnimationController(duration: const Duration(seconds: 4), vsync: this)
           ..addStatusListener((status) {
-            print("status in $status");
+            print("_MWordShowState status in $status");
           })
           ..addListener(() {
-            // print(controller.value);
-            if ((.5 - controller.value < .03) && (controller.value < .5)) {
-              print("${controller.value} Stop");
+            print(controller.value);
+            if ((.5 - controller.value < .05) && (controller.value < .5)) {
+              print("_MWordShowState ${controller.value} Stop");
               controller.stop();
             }
           });
@@ -54,10 +54,16 @@ class _MWordShowState extends State<MWordShow>
   Widget build(BuildContext context) {
     var state = context.watch<WordlistBloc>().state;
     if (state is WordlistStateShow) {
-      print("WordlistStateShow");
+      print("_MWordShowState b");
 
       controller.forward(from: 0);
-      print("WordlistStateShow");
+
+      Future.delayed(Duration(milliseconds: 5000), () {
+        widget.onNextPressed();
+        controller.forward(from: .51);
+      });
+
+      print("_MWordShowState a");
     }
 
     return Padding(
@@ -68,8 +74,8 @@ class _MWordShowState extends State<MWordShow>
         word: widget.word,
         onNextPressed: () {
           // controller.reverse();
-          widget.onNextPressed();
-          controller.forward(from: .51);
+          // widget.onNextPressed();
+          // controller.forward(from: .51);
         },
         height: MediaQuery.of(context).size.height,
         backgroundColor: widget.backgroundColor,

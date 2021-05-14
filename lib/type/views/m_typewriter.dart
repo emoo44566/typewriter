@@ -18,12 +18,13 @@ class _MTypeWriterState extends State<MTypeWriter> {
   String currentText = '';
   Size deviceSize = Size(0, 0);
   String goalText = '';
+  String goalTextInPersian = '';
   Color backgroundColor = Colors.blue;
 
   @override
   void initState() {
     super.initState();
-    print("initState --");
+    print("_MTypeWriterState initState");
   }
 
   _onKeyPressed(String key) {
@@ -46,19 +47,31 @@ class _MTypeWriterState extends State<MTypeWriter> {
   @override
   Widget build(BuildContext context) {
     deviceSize = MediaQuery.of(context).size;
-    print("build ...");
+    print("_MTypeWriterState build");
 
     var state = context.watch<WordlistBloc>().state;
-
-    Future.delayed(Duration(milliseconds: 1800), () {
-      print("build ... //");
-      goalText = state.currentWord;
-      if ((state is WordlistStateShow) && (currentText != ''))
+    if (state.wordIndex == 0)
+      Future.delayed(Duration(milliseconds: 800), () {
         setState(() {
-          currentText = '';
-          backgroundColor = widget.backgroundColor;
+          goalText = state.currentWord.key;
+          goalTextInPersian = state.currentWord.value;
         });
-    });
+      });
+    else
+      Future.delayed(Duration(milliseconds: 2000), () {
+        print("_MTypeWriterState build delay");
+        goalText = state.currentWord.key;
+        goalTextInPersian = state.currentWord.value;
+        if ((state is WordlistStateShow) && (currentText != '')) {
+          print("_MTypeWriterState build delay setState");
+          setState(() {
+            currentText = '';
+            backgroundColor = widget.backgroundColor;
+          });
+        }
+      });
+
+    print("_MTypeWriterState -$currentText-${widget.goalText}-");
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -73,15 +86,44 @@ class _MTypeWriterState extends State<MTypeWriter> {
             child: Padding(
               padding: EdgeInsets.only(
                   top: 30,
-                  right: deviceSize.width * .3,
-                  left: deviceSize.width * .3),
-              child: Center(
-                child: MHintText(
-                  text: currentText,
-                  goalText: goalText,
-                  fontSize: deviceSize.height * .08,
-                  onKeyPressed: (String key) {},
-                ),
+                  right: deviceSize.width * .1,
+                  left: deviceSize.width * .1),
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Center(
+                      child: Text(
+                        goalTextInPersian,
+                        style: Theme.of(context).textTheme.headline6?.copyWith(
+                            color: Colors.black.withAlpha(200),
+                            fontSize: deviceSize.height * .05),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: Center(
+                      child: MHintText(
+                        text: currentText,
+                        goalText: goalText,
+                        fontSize: deviceSize.height * .08,
+                        onKeyPressed: (String key) {},
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: Center(
+                      child: Text(
+                        '',
+                        style: Theme.of(context).textTheme.headline6?.copyWith(
+                            color: Colors.black.withAlpha(200),
+                            fontSize: deviceSize.height * .05),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
