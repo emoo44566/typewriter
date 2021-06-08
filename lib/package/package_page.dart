@@ -20,9 +20,10 @@ class PackagePage extends StatelessWidget {
         child: Center(
             child: Column(children: [
           Expanded(
-              child: PackageList(
-            onPackageTap: onPackageTap,
-          ))
+            child: PackageList(
+              onPackageTap: onPackageTap,
+            ),
+          )
         ])),
       ),
 
@@ -63,10 +64,11 @@ class PackageList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
       child: Padding(
         padding: EdgeInsets.only(right: 36, left: 36),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+        child: Row(
+          // mainAxisSize: MainAxisSize.min,
           children: _getAllPackageItems(context),
         ),
       ),

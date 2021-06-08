@@ -5,13 +5,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:math' as math;
 
 class MWordShow extends StatefulWidget {
-  final String word;
+  final String word, wordInPersian;
   final Color backgroundColor;
   final VoidCallback onNextPressed;
 
   const MWordShow(
       {Key? key,
       required this.word,
+      required this.wordInPersian,
       required this.backgroundColor,
       required this.onNextPressed})
       : super(key: key);
@@ -58,7 +59,7 @@ class _MWordShowState extends State<MWordShow>
 
       controller.forward(from: 0);
 
-      Future.delayed(Duration(milliseconds: 5000), () {
+      Future.delayed(Duration(milliseconds: 3300), () {
         widget.onNextPressed();
         controller.forward(from: .51);
       });
@@ -72,6 +73,7 @@ class _MWordShowState extends State<MWordShow>
           child: StaggerAnimation(
         controller: controller,
         word: widget.word,
+        wordInPersian: widget.wordInPersian,
         onNextPressed: () {
           // controller.reverse();
           // widget.onNextPressed();
@@ -89,6 +91,7 @@ class StaggerAnimation extends StatelessWidget {
       {Key? key,
       required this.controller,
       required this.word,
+      required this.wordInPersian,
       required this.onNextPressed,
       required this.height,
       required this.backgroundColor})
@@ -121,7 +124,7 @@ class StaggerAnimation extends StatelessWidget {
         super(key: key);
 
   final AnimationController controller;
-  final String word;
+  final String word, wordInPersian;
   final VoidCallback onNextPressed;
   final double height;
   final Color backgroundColor;
@@ -179,9 +182,20 @@ class StaggerAnimation extends StatelessWidget {
               style: Theme.of(context)
                   .textTheme
                   .headline4
-                  ?.copyWith(fontSize: height * .08)),
+                  ?.copyWith(fontSize: height * .09)),
         ),
         SizedBox(
+          height: 20, // _sizeTween.evaluate(animation),
+        ),
+        Transform.scale(
+          scale: wordScaleTween.value, //   < .3 ? .5 : 1,
+          child: Text(wordInPersian,
+              style: Theme.of(context)
+                  .textTheme
+                  .headline4
+                  ?.copyWith(fontSize: height * .07)),
+        ),
+         SizedBox(
           height: 100, // _sizeTween.evaluate(animation),
         ),
         Transform.scale(

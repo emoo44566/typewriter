@@ -11,7 +11,19 @@ class MainScreen extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          Background(),
+          // Background(),
+          SizedBox.expand(
+              child: Container(
+            decoration: BoxDecoration(color: Colors.blueAccent),
+            child: Image(
+                fit: BoxFit.cover,              
+                image: AssetImage('assets/images/bigsur.jpg')),
+          )
+              // decoration: BoxDecoration(
+
+              //   color: Color.fromRGBO(250, 250, 255, 1),
+              // ),
+              ),
           TypePage(),
           // IndexedStack(
           //     index: context.watch<MainBloc>().state.selectedT,

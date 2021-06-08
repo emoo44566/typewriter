@@ -57,33 +57,45 @@ class _TypePageState extends State<TypePage> {
 
   Widget _childInitial() {
     return SizedBox.expand(
-        child: Container(
-            decoration: BoxDecoration(
-              color: Color.fromRGBO(222, 195, 195, 1),
+        child: Column(
+      children: [
+        Expanded(
+          flex: 1,
+          child: Center(
+            child: Center(
+              child: Text(
+                "Learn...",
+                style: Theme.of(context)
+                    .textTheme
+                    .headline2
+                    ?.copyWith(color: Colors.black87),
+                textAlign: TextAlign.left,
+              ),
             ),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Center(
-                    child: IconButton(
-                        iconSize: 120,
-                        icon: Icon(CupertinoIcons.play_fill),
-                        onPressed: () {
-                          Future.delayed(Duration(seconds: 0), () => {});
-                          // context.read<WordlistBloc>().add(WordlistEventNextClicked());
-                        }),
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: PackagePage(
+          ),
+        ),
+        Expanded(
+          flex: 4,
+          child: Container(
+              // decoration: BoxDecoration(
+              //   color: Color.fromRGBO(100, 195, 195, 1),
+              // ),
+              child: Stack(
+                children: [
+                  SizedBox.expand(
+                    child: Image(
+                        fit: BoxFit.cover,
+                        image: AssetImage('assets/images/bigsur.jpg')),
+                  ),                  
+                  PackagePage(
                       onPackageTap: (model) => context
                           .read<WordlistBloc>()
                           .add(WordlistEventStartClicked(packageModel: model))),
-                ),
-              ],
-            )));
+                ],
+              )),
+        ),
+      ],
+    ));
   }
 
   Widget _childWordShow(WordlistState state) {
@@ -92,6 +104,7 @@ class _TypePageState extends State<TypePage> {
         child: MWordShow(
       key: Key("lsdkfjlsdfsl"),
       word: state.currentWord.key,
+      wordInPersian: state.currentWord.value,
       backgroundColor: _getStateColor(state),
       onNextPressed: () =>
           context.read<WordlistBloc>().add(WordlistEventNextClicked()),
@@ -115,7 +128,8 @@ class _TypePageState extends State<TypePage> {
     if (state.wordIndex % 2 == 0)
       return Color.fromRGBO(222, 195, 195, 1);
     else
-      return Color.fromRGBO(216, 226, 220, 1); //(199, 240, 225, 1);
+      return Color.fromRGBO(
+          200, 226, 220, 1); //(199, 240, 225, 1);   //(17, 157, 164, 1);
   }
 
   Widget _childFinish() {
